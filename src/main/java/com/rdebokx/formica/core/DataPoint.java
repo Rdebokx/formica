@@ -1,9 +1,6 @@
 package com.rdebokx.formica.core;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.stream.Collectors;
 
 public abstract class DataPoint {
 

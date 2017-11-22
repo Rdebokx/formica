@@ -10,8 +10,18 @@ public class Fruit extends DataPoint {
   private static final int SWEETNESS = 2;
   private static final int GROW_TIME = 3;
 
-  public Fruit(){
+  /**
+   * String representation of this fruit. For testing purposes only.
+   */
+  private String name;
+
+  public Fruit(String name, double weight, double volume, double sweetness, double growTime){
     super(WEIGHT, VOLUME, SWEETNESS, GROW_TIME);
+    this.name = name;
+    setWeight(weight);
+    setVolume(volume);
+    setSweetness(sweetness);
+    setGrowTime(growTime);
   }
 
   public void setWeight(double weight) {
@@ -45,4 +55,10 @@ public class Fruit extends DataPoint {
   public double getGrowTime() {
     return values[GROW_TIME];
   }
+
+  @Override
+  public String toString(){
+    return this.name;
+  }
+
 }

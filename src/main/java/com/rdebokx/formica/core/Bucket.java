@@ -1,6 +1,7 @@
 package com.rdebokx.formica.core;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -10,6 +11,10 @@ public class Bucket {
 
   public Bucket(){
     contents = new ArrayList<>();
+  }
+
+  public Bucket(DataPoint ... contents){
+    this.contents = Arrays.asList(contents);
   }
 
   public boolean isEmpty() {

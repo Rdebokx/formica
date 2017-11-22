@@ -4,6 +4,8 @@ import com.rdebokx.formica.core.DataPoint;
 
 public class EuclideanMetric<T extends DataPoint> implements DistanceMetric<T> {
 
+  public final static String METRIC_NAME = "Euclidean";
+
   /**
    * Distance function to calculate the Euclidean distance between two DataPoints p1 and p2.
    * @param p1 DataPoint 1
