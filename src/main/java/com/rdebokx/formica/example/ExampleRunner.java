@@ -1,17 +1,29 @@
 package com.rdebokx.formica.example;
 
 import com.rdebokx.formica.core.Colony;
+import com.rdebokx.formica.core.DataPoint;
 
-public class TestRunner {
+import java.util.List;
+
+public class ExampleRunner {
 
   public static void main(String ... args){
     System.out.println("Hello world! Let's build a colony filled with fruit...");
     Colony colony = buildColony();
 
     //TODO: initialize ants in colony
-    colony.start();
+    long startTime = System.currentTimeMillis();
+    //Run for 10s
+    System.out.println("Running the colony for 10s.");
+    while(System.currentTimeMillis() < startTime + 1000*10){
+      colony.nextStep();
+    }
 
-
+    List<List<DataPoint>> buckets = colony.getBuckets();
+    for(int i = 0; i < buckets.size(); i++){
+      List<DataPoint> bucket = buckets.get(i);
+      System.out.println("Bucket " + i + ": " + bucket);
+    }
   }
 
   public static Colony buildColony() {
