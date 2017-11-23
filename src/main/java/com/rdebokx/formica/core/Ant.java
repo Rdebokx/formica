@@ -1,5 +1,7 @@
 package com.rdebokx.formica.core;
 
+import com.rdebokx.formica.execution.Configuration;
+
 import java.util.List;
 
 public class Ant {
@@ -27,22 +29,24 @@ public class Ant {
    * @param nextBucket
    */
   private void pickUp(List<DataPoint> nextBucket){
-    int candidateIndex = colony.randomizer.nextInt(nextBucket.size());
-    double distanceToBucket = distanceToBucket(nextBucket.get(candidateIndex), nextBucket);
+    if(!nextBucket.isEmpty()) {
+      int candidateIndex = colony.randomizer.nextInt(nextBucket.size());
+      double distanceToBucket = distanceToBucket(nextBucket.get(candidateIndex), nextBucket, Configuration.BASIC_PICKUP_PROB);
 
-    if(performAction(distanceToBucket)){
-      payload = nextBucket.remove(candidateIndex);
+      if (performAction(distanceToBucket)) {
+        payload = nextBucket.remove(candidateIndex);
+      }
     }
   }
 
   private void drop(List<DataPoint> nextBucket){
-    if(performAction(1 - distanceToBucket(payload, nextBucket))){
+    if(performAction(1 - distanceToBucket(payload, nextBucket, 1 - Configuration.BASIC_DROP_PROB))){
       nextBucket.add(payload);
       payload = null;
     }
   }
 
-  private double distanceToBucket(DataPoint candidate, List<DataPoint> bucket){
+  private double distanceToBucket(DataPoint candidate, List<DataPoint> bucket, double defaultDistance){
     double totalDistance = 0;
     int distancesCount = 0;
     for(DataPoint dataPoint : bucket){
@@ -51,7 +55,7 @@ public class Ant {
         distancesCount++;
       }
     }
-    return totalDistance / distancesCount;
+    return distancesCount > 0 ? totalDistance / distancesCount : defaultDistance;
   }
 
   /**
