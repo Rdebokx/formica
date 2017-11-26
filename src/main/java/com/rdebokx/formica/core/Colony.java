@@ -22,6 +22,13 @@ public class Colony {
     distanceCalculator = new DistanceCalculator(initialData);
     initializeBuckets(initialData);
     initializeAnts();
+    initializeRandomizer();
+  }
+
+  protected void initializeRandomizer() {
+    if(randomizer != null){
+      throw new RuntimeException("randomizer already initialized.");
+    }
     this.randomizer = new Random();
   }
 

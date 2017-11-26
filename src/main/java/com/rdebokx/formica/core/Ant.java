@@ -28,7 +28,7 @@ public class Ant {
    * TODO javadoc. Probabilistic function for picking up.
    * @param nextBucket
    */
-  private void pickUp(List<DataPoint> nextBucket){
+  public void pickUp(List<DataPoint> nextBucket){
     if(!nextBucket.isEmpty()) {
       int candidateIndex = colony.randomizer.nextInt(nextBucket.size());
       double distanceToBucket = distanceToBucket(nextBucket.get(candidateIndex), nextBucket, Configuration.BASIC_PICKUP_PROB);
@@ -39,14 +39,14 @@ public class Ant {
     }
   }
 
-  private void drop(List<DataPoint> nextBucket){
+  public void drop(List<DataPoint> nextBucket){
     if(performAction(1 - distanceToBucket(payload, nextBucket, 1 - Configuration.BASIC_DROP_PROB))){
       nextBucket.add(payload);
       payload = null;
     }
   }
 
-  private double distanceToBucket(DataPoint candidate, List<DataPoint> bucket, double defaultDistance){
+  public double distanceToBucket(DataPoint candidate, List<DataPoint> bucket, double defaultDistance){
     double totalDistance = 0;
     int distancesCount = 0;
     for(DataPoint dataPoint : bucket){
