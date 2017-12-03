@@ -35,7 +35,7 @@ public abstract class DataPoint {
   }
 
   /**
-   * This function will return the average distance of this DataPoint to the other DataPoints in the given bucket.
+   * This function will return the average normalized distance of this DataPoint to the other DataPoints in the given bucket.
    * Distances will be calculated using the provided calculator. If an empty bucket was provided, the  given default distance will be returned.
    * @param bucket The bucket that the average distance to the current DataPoint needs to be calculated for.
    * @param distanceCalculator The DistanceCalculator to be used.
