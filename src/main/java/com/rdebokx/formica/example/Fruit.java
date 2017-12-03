@@ -2,56 +2,77 @@ package com.rdebokx.formica.example;
 
 import com.rdebokx.formica.core.DataPoint;
 
+/**
+ * Fruit DataPoint, representing the Weight, Volume, Sweetness and GrowTime of a fruit.
+ */
 public class Fruit extends DataPoint {
 
-  //Indices
+  /**
+   * Index of Weight property.
+   */
   private static final int WEIGHT = 0;
+
+  /**
+   * Index of Volume property.
+   */
   private static final int VOLUME = 1;
+
+  /**
+   * Index of Sweetness property.
+   */
   private static final int SWEETNESS = 2;
+
+  /**
+   * Index of GrowTime property.
+   */
   private static final int GROW_TIME = 3;
 
   /**
-   * String representation of this fruit. For testing purposes only.
+   * String representation of this fruit. For testing purposes only, will not be considered during sorting.
    */
   private String name;
 
+  /**
+   * Constructor, constructing a fruit with the given properties.
+   * @param name The name of the fruit. Used for testing purposes only, will not be considered during sorting.
+   * @param weight The weight of the fruit.
+   * @param volume The volume of the fruit.
+   * @param sweetness The sweetness of the fruit.
+   * @param growTime The grow time of the fruit.
+   */
   public Fruit(String name, double weight, double volume, double sweetness, double growTime){
-    super(WEIGHT, VOLUME, SWEETNESS, GROW_TIME);
+    super(4);
     this.name = name;
-    setWeight(weight);
-    setVolume(volume);
-    setSweetness(sweetness);
-    setGrowTime(growTime);
-  }
-
-  public void setWeight(double weight) {
     values[WEIGHT] = weight;
+    values[VOLUME] = volume;
+    values[SWEETNESS] = sweetness;
+    values[GROW_TIME] = growTime;
   }
 
+  /**
+   * @return The weight of this fruit.
+   */
   public double getWeight() {
     return values[WEIGHT];
   }
 
-  public void setVolume(double volume){
-    values[VOLUME] = volume;
-  }
-
+  /**
+   * @return The volume of this fruit.
+   */
   public double getVolume() {
     return values[VOLUME];
   }
 
-  public void setSweetness(double sweetness) {
-    values[SWEETNESS] = sweetness;
-  }
-
+  /**
+   * @return The sweetness of this fruit.
+   */
   public double getSweetness() {
     return values[SWEETNESS];
   }
 
-  public void setGrowTime(double growTime) {
-    values[GROW_TIME] = growTime;
-  }
-
+  /**
+   * @return The grow time of this fruit.
+   */
   public double getGrowTime() {
     return values[GROW_TIME];
   }
