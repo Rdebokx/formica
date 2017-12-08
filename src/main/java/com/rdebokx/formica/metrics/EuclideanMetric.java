@@ -32,12 +32,11 @@ public class EuclideanMetric<T extends DataPoint> extends DistanceMetric<T> {
         maxDistance = Math.max(maxDistance, absoluteDistance(dataPoints.get(i), dataPoints.get(j)));
       }
     }
-
     this.maxDistance = maxDistance;
   }
 
   @Override
-  public double normalizedDistance(T p1, T p2){
+  protected double normalizedDistance(T p1, T p2){
     return absoluteDistance(p1, p2) / maxDistance;
   }
 

@@ -44,6 +44,7 @@ public class Ant {
    * With a chance P, which is based on the similarity of this DataPoint to the rest of the bucket, this DataPoint will then be removed from the bucket and carried by this ant as payload.
    * The less similar the selected DataPoint is to the other DataPoints in the bucket, the higher the chance that this DataPoint will be picked up by this ant.
    * Will use the randomizer of the Colony that this ant belongs to, to evaluate whether or not to pickup the selected DataPoint.
+   * With a probability P as defined by Configuration.basicPickupProb there is a chance that the ant will pick up the randomly selected DataPoint, regardless of the contents of the nextBucket.
    * @param nextBucket The bucket that this ant has moved to and a DataPoint may or may not be picked up from.
    */
   protected void pickUp(List<DataPoint> nextBucket){
@@ -52,9 +53,9 @@ public class Ant {
     }
     if(!nextBucket.isEmpty()) {
       int candidateIndex = colony.randomizer.nextInt(nextBucket.size());
-      double distanceToBucket = nextBucket.get(candidateIndex).avgDistanceToBucket(nextBucket, colony.distanceCalculator, colony.config.getBasicPickupProb());
+      double distanceToBucket = nextBucket.get(candidateIndex).avgDistanceToBucket(nextBucket, colony.distanceCalculator);
 
-      if (performAction(distanceToBucket)) {
+      if (performAction(distanceToBucket) || performAction(colony.config.getBasicDropProb())) {
         payload = nextBucket.remove(candidateIndex);
       }
     }
@@ -65,13 +66,14 @@ public class Ant {
    * With a chance P, which is based on the similarity of the current payload to the DataPoints in the given bucket, the current payload will be dropped by the ant and added to the given bucket.
    * The more similar the current payload is to the other DataPoints in the bucket, de higher the chance that the current payload will be added to the bucket.
    * Will use the randomizer of the Colony that this ant belongs to, to evaluate whether or not to drop the current payload.
+   * With a probability P as defined by Configuration.basicDropProb, the ant will drop its current payload, regardless of the contents the nextBucket.
    * @param nextBucket The bucket that his ant may or may not its current payload in.
    */
   protected void drop(List<DataPoint> nextBucket){
     if(payload == null){
       throw new RuntimeException("Ant has no payload to drop.");
     }
-    if(performAction(1 - payload.avgDistanceToBucket(nextBucket, colony.distanceCalculator,1 - colony.config.getBasicDropProb()))){
+    if(performAction(1 - payload.avgDistanceToBucket(nextBucket, colony.distanceCalculator)) || performAction(colony.config.getBasicPickupProb())){
       nextBucket.add(payload);
       payload = null;
     }
@@ -85,5 +87,12 @@ public class Ant {
    */
   private boolean performAction(double p) {
     return colony.randomizer.nextDouble() < p;
+  }
+
+  /**
+   * @return The payload that this ant is currently carrying.
+   */
+  public DataPoint getPayload() {
+    return payload;
   }
 }

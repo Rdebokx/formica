@@ -29,7 +29,7 @@ public class ExampleRunner {
   }
 
   public static Colony buildColony() {
-    Configuration config = new Configuration(EuclideanMetric.METRIC_NAME, 5, 0.5, 0.5);
+    Configuration config = new Configuration(EuclideanMetric.METRIC_NAME, 5, 0.05, 0.25);
 
     return new Colony(config, Arrays.asList(
         new Fruit("Apple", 0.214, 0.180, 2.5, 60),

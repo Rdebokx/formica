@@ -37,7 +37,7 @@ public class ManhattanMetric<T extends DataPoint> extends DistanceMetric<T> {
   }
 
   @Override
-  public double normalizedDistance(T p1, T p2){
+  protected double normalizedDistance(T p1, T p2){
     return absoluteDistance(p1, p2) / maxDistance;
   }
 
@@ -47,7 +47,7 @@ public class ManhattanMetric<T extends DataPoint> extends DistanceMetric<T> {
    * @param p2 DataPoint 2
    * @return The Manhattan distance between p1 and p2.
    */
-  public double absoluteDistance(T p1, T p2){
+  private double absoluteDistance(T p1, T p2){
     double[] p1Values = p1.getValues();
     double[] p2Values = p2.getValues();
 

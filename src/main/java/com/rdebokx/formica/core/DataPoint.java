@@ -36,13 +36,12 @@ public abstract class DataPoint {
 
   /**
    * This function will return the average normalized distance of this DataPoint to the other DataPoints in the given bucket.
-   * Distances will be calculated using the provided calculator. If an empty bucket was provided, the  given default distance will be returned.
+   * Distances will be calculated using the provided calculator. Iff an empty bucket was provided, -1 will be returned.
    * @param bucket The bucket that the average distance to the current DataPoint needs to be calculated for.
    * @param distanceCalculator The DistanceCalculator to be used.
-   * @param defaultDistance The default distance, which will be returned iff an empty bucket is provided.
-   * @return The average distance of this DataPoint to the other DataPoints in the bucket.
+   * @return The average distance of this DataPoint to the other DataPoints in the bucket or -1 iff the bucket was empty.
    */
-  public double avgDistanceToBucket(List<DataPoint> bucket, DistanceMetric distanceCalculator, double defaultDistance){
+  public double avgDistanceToBucket(List<DataPoint> bucket, DistanceMetric distanceCalculator){
     double totalDistance = 0;
     int distancesCount = 0;
     for(DataPoint dataPoint : bucket){
@@ -51,7 +50,7 @@ public abstract class DataPoint {
         distancesCount++;
       }
     }
-    return distancesCount > 0 ? totalDistance / distancesCount : defaultDistance;
+    return distancesCount > 0 ? totalDistance / distancesCount : -1;
   }
 
 }
