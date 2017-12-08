@@ -8,11 +8,18 @@ import com.rdebokx.formica.core.DataPoint;
 public class DataPoint2D extends DataPoint {
 
   /**
-   * Costructor, constructing an empty DataPoint2D with X and Y set to 0.0.
+   * Constructor, constructing an empty DataPoint2D with X and Y set to 0.0.
    */
   public DataPoint2D(){
     super(2);
   }
+
+  /**
+   * Constructor, constructing a DataPoint2D object with the given X and Y value.
+   * @param x The value of X.
+   * @param y The value of Y.
+   */
+  public DataPoint2D(double x, double y){ super(x, y); }
 
   /**
    * Set X.

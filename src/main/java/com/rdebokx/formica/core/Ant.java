@@ -1,7 +1,5 @@
 package com.rdebokx.formica.core;
 
-import com.rdebokx.formica.execution.Configuration;
-
 import java.util.List;
 
 /**
@@ -54,7 +52,7 @@ public class Ant {
     }
     if(!nextBucket.isEmpty()) {
       int candidateIndex = colony.randomizer.nextInt(nextBucket.size());
-      double distanceToBucket = nextBucket.get(candidateIndex).avgDistanceToBucket(nextBucket, colony.distanceCalculator, Configuration.BASIC_PICKUP_PROB);
+      double distanceToBucket = nextBucket.get(candidateIndex).avgDistanceToBucket(nextBucket, colony.distanceCalculator, colony.config.getBasicPickupProb());
 
       if (performAction(distanceToBucket)) {
         payload = nextBucket.remove(candidateIndex);
@@ -73,7 +71,7 @@ public class Ant {
     if(payload == null){
       throw new RuntimeException("Ant has no payload to drop.");
     }
-    if(performAction(1 - payload.avgDistanceToBucket(nextBucket, colony.distanceCalculator,1 - Configuration.BASIC_DROP_PROB))){
+    if(performAction(1 - payload.avgDistanceToBucket(nextBucket, colony.distanceCalculator,1 - colony.config.getBasicDropProb()))){
       nextBucket.add(payload);
       payload = null;
     }

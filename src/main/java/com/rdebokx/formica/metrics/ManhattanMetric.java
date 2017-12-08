@@ -2,12 +2,14 @@ package com.rdebokx.formica.metrics;
 
 import com.rdebokx.formica.core.DataPoint;
 
-public class ManhattanMetric<T extends DataPoint> implements DistanceMetric<T> {
+import java.util.List;
+
+public class ManhattanMetric<T extends DataPoint> extends DistanceMetric<T> {
 
   /**
    * The name of this Distance Metric.
    */
-  public final static String METRIC_NAME = "Euclidean";
+  public final static String METRIC_NAME = "Manhattan";
 
   /**
    * The maximum distance recorded among all DataPoints during initialization.
@@ -22,26 +24,20 @@ public class ManhattanMetric<T extends DataPoint> implements DistanceMetric<T> {
    * meaning that caching will most likely not increase performance while requiring significant amounts of memory for larger datasets.
    * @param dataPoints The list of DataPoints to initialize on, required for returning a normalized distance.
    */
-  public ManhattanMetric(T ... dataPoints){
+  public ManhattanMetric(List<T> dataPoints){
     double maxDistance = -1;
 
-    for(int i = 0; i < dataPoints.length; i++){
-      for(int j = i + 1; j < dataPoints.length; j++){
-        maxDistance = Math.max(maxDistance, absoluteDistance(dataPoints[i], dataPoints[j]));
+    for(int i = 0; i < dataPoints.size(); i++){
+      for(int j = i + 1; j < dataPoints.size(); j++){
+        maxDistance = Math.max(maxDistance, absoluteDistance(dataPoints.get(i), dataPoints.get(j)));
       }
     }
 
     this.maxDistance = maxDistance;
   }
 
-  /**
-   * Distance function to calculate the normalized Manhattan distance between two DataPoints p1 and p2.
-   * Will return a negative distance when not properly initialized.
-   * @param p1 DataPoint 1
-   * @param p2 DataPoint 2
-   * @return The normalized Manhattan distance between p1 and p2.
-   */
-  public double distance(T p1, T p2){
+  @Override
+  public double normalizedDistance(T p1, T p2){
     return absoluteDistance(p1, p2) / maxDistance;
   }
 

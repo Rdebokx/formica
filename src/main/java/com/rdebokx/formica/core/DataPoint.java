@@ -1,6 +1,6 @@
 package com.rdebokx.formica.core;
 
-import com.rdebokx.formica.metrics.DistanceCalculator;
+import com.rdebokx.formica.metrics.DistanceMetric;
 
 import java.util.List;
 
@@ -42,7 +42,7 @@ public abstract class DataPoint {
    * @param defaultDistance The default distance, which will be returned iff an empty bucket is provided.
    * @return The average distance of this DataPoint to the other DataPoints in the bucket.
    */
-  public double avgDistanceToBucket(List<DataPoint> bucket, DistanceCalculator distanceCalculator, double defaultDistance){
+  public double avgDistanceToBucket(List<DataPoint> bucket, DistanceMetric distanceCalculator, double defaultDistance){
     double totalDistance = 0;
     int distancesCount = 0;
     for(DataPoint dataPoint : bucket){

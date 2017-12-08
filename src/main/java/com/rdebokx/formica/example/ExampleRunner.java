@@ -2,7 +2,10 @@ package com.rdebokx.formica.example;
 
 import com.rdebokx.formica.core.Colony;
 import com.rdebokx.formica.core.DataPoint;
+import com.rdebokx.formica.execution.Configuration;
+import com.rdebokx.formica.metrics.EuclideanMetric;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class ExampleRunner {
@@ -11,7 +14,6 @@ public class ExampleRunner {
     System.out.println("Hello world! Let's build a colony filled with fruit...");
     Colony colony = buildColony();
 
-    //TODO: initialize ants in colony
     long startTime = System.currentTimeMillis();
     //Run for 10s
     System.out.println("Running the colony for 10s.");
@@ -27,7 +29,9 @@ public class ExampleRunner {
   }
 
   public static Colony buildColony() {
-    return new Colony(
+    Configuration config = new Configuration(EuclideanMetric.METRIC_NAME, 5, 0.5, 0.5);
+
+    return new Colony(config, Arrays.asList(
         new Fruit("Apple", 0.214, 0.180, 2.5, 60),
         new Fruit("Apple", 0.350, 0.231, 2.5, 60),
         new Fruit("Apple", 0.221, 0.186, 2.5, 60),
@@ -47,6 +51,6 @@ public class ExampleRunner {
         new Fruit("WaterMelon", 4.854, 4.515, 0.9, 90),
         new Fruit("WaterMelon", 5.356, 5.020, 0.9, 90),
         new Fruit("WaterMelon", 6.785, 6.650, 0.9, 90)
-    );
+    ));
   }
 }
