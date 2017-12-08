@@ -55,7 +55,7 @@ public class Ant {
       int candidateIndex = colony.randomizer.nextInt(nextBucket.size());
       double distanceToBucket = nextBucket.get(candidateIndex).avgDistanceToBucket(nextBucket, colony.distanceCalculator);
 
-      if (performAction(distanceToBucket) || performAction(colony.config.getBasicDropProb())) {
+      if (performAction(distanceToBucket) || performAction(colony.config.getBasicPickupProb())) {
         payload = nextBucket.remove(candidateIndex);
       }
     }
@@ -73,7 +73,7 @@ public class Ant {
     if(payload == null){
       throw new RuntimeException("Ant has no payload to drop.");
     }
-    if(performAction(1 - payload.avgDistanceToBucket(nextBucket, colony.distanceCalculator)) || performAction(colony.config.getBasicPickupProb())){
+    if(!nextBucket.isEmpty() && performAction(1 - payload.avgDistanceToBucket(nextBucket, colony.distanceCalculator)) || performAction(colony.config.getBasicDropProb())){
       nextBucket.add(payload);
       payload = null;
     }
@@ -85,9 +85,7 @@ public class Ant {
    *          Double value between 0 and 1, where 0 gives a 0% chance that this function will return true and 1 will give a 100% chance that this function will return true.
    * @return true with probability P.
    */
-  private boolean performAction(double p) {
-    return colony.randomizer.nextDouble() < p;
-  }
+  private boolean performAction(double p) { return colony.randomizer.nextDouble() < p; }
 
   /**
    * @return The payload that this ant is currently carrying.

@@ -33,7 +33,7 @@ public class Colony {
   /**
    * The Random object used by the ants in this colony.
    */
-  protected final Random randomizer;
+  protected Random randomizer;
 
   /**
    * Constructor, initializing this colony with a set of Ants and one bucket per provided DataPoint.

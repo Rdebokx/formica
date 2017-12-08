@@ -9,12 +9,19 @@ import java.util.List;
 
 public class TestColony extends Colony {
 
-  public final static long RANDOMIZER_SEED = 1561570379050615836l;
-
-  public TestColony(Configuration config, List<DataPoint> initialData){
+  /**
+   * Constructor, constructing a TestColony which is essentially a non-stochastic Colony.
+   * @param config The configuration to be used by this colony.
+   * @param randomizer The TestRandom object to be used as randomizer. Allows you to define the stochastic behavior of the Colony.
+   * @param initialData The list of initial DataPoints.
+   */
+  public TestColony(Configuration config, TestRandom randomizer, List<DataPoint> initialData){
     super(config, initialData);
-    randomizer.setSeed(RANDOMIZER_SEED);
+    this.randomizer = randomizer;
   }
 
+  /**
+   * @return The ants in this colony
+   */
   public Ant[] getAnts() { return ants; }
 }
