@@ -4,33 +4,26 @@ import com.rdebokx.formica.metrics.DistanceMetric;
 
 import java.util.List;
 
-public abstract class DataPoint {
+public abstract class DataPoint<T> {
 
   /**
-   * Array of double values that this DataPoint represents.
+   * Array of values that this DataPoint represents.
    */
-  protected final double[] values;
+  protected final T[] values;
 
-  /**
-   * Constructor, creating a DataPoint that can represent the given number of properties. The values of these properties are initialized at 0.0.
-   * @param numProperties The number of properties or dimensions that this DataPoint will represent.
-   */
-  protected DataPoint(int numProperties) {
-    this(new double[numProperties]);
-  }
 
   /**
    * Constructor, creating a DataPoint that will represent the given array of property values.
    * @param values The property values that this DataPoint will represent.
    */
-  public DataPoint(double ... values){
+  protected DataPoint(T ... values){
     this.values = values;
   }
 
   /**
    * @return The property values of this DataPoint.
    */
-  public double[] getValues() {
+  public T[] getValues() {
     return values;
   }
 
@@ -41,7 +34,7 @@ public abstract class DataPoint {
    * @param distanceCalculator The DistanceCalculator to be used.
    * @return The average distance of this DataPoint to the other DataPoints in the bucket or -1 iff the bucket was empty.
    */
-  public double avgDistanceToBucket(List<DataPoint> bucket, DistanceMetric distanceCalculator){
+  public double avgDistanceToBucket(List<DataPoint<T>> bucket, DistanceMetric<DataPoint<T>> distanceCalculator){
     double totalDistance = 0;
     int distancesCount = 0;
     for(DataPoint dataPoint : bucket){

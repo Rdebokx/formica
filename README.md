@@ -12,7 +12,7 @@ For more information on how to contribute to this project or currently planned d
 The Formica module is still to be published to a central repository. Until then one can install the module locally using `mvn install`
 
 Once you loaded Formica into your project, you can load DataPoints into a Colony, provide it with a configuration that suits your needs and start sorting!
-An example of how to run Formica:
+An very trivial example of how to run Formica:
 
 ```java
 import com.rdebokx.formica.core.Colony;
@@ -26,6 +26,7 @@ import java.util.List;
 public class Example {
   public static void main(String ... args){
     Configuration config = new Configuration(EuclideanMetric.METRIC_NAME, 5, 0.05, 0.25);
+    
     Colony colony = new Colony(config, Arrays.asList(
         new DataPoint2D(1.5, 100.8),
         new DataPoint2D(1.3, 101.5),
@@ -33,6 +34,7 @@ public class Example {
         new DataPoint2D(7.9, 25.8),
         new DataPoint2D(10.15, 30.1)
     ));
+    
     long startTime = System.currentTimeMillis();
     while(System.currentTimeMillis() < startTime + 1000*10){
       colony.nextStep();

@@ -5,13 +5,13 @@ import com.rdebokx.formica.core.DataPoint;
 /**
  * Example of a two-dimensional DataPoint, representing a value X and Y.
  */
-public class DataPoint2D extends DataPoint {
+public class DataPoint2D extends DataPoint<Double> {
 
   /**
    * Constructor, constructing an empty DataPoint2D with X and Y set to 0.0.
    */
   public DataPoint2D(){
-    super(2);
+    super(null, null);
   }
 
   /**
@@ -19,20 +19,20 @@ public class DataPoint2D extends DataPoint {
    * @param x The value of X.
    * @param y The value of Y.
    */
-  public DataPoint2D(double x, double y){ super(x, y); }
+  public DataPoint2D(double x, double y){ super(new Double(x), new Double(y)); }
 
   /**
    * Set X.
    * @param x new X value.
    */
-  public void setX(double x){
+  public void setX(Double x){
     values[0] = x;
   }
 
   /**
    * @return value of X.
    */
-  public double getX() {
+  public Double getX() {
     return values[0];
   }
 
@@ -40,14 +40,14 @@ public class DataPoint2D extends DataPoint {
    * Set Y.
    * @param y new Y value.
    */
-  public void setY(double y){
+  public void setY(Double y){
     values[1] = y;
   }
 
   /**
    * @return value of Y.
    */
-  public double getY() {
+  public Double getY() {
     return values[1];
   }
 }

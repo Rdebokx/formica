@@ -4,7 +4,7 @@ import com.rdebokx.formica.core.DataPoint;
 
 import java.util.List;
 
-public class EuclideanMetric<T extends DataPoint> extends DistanceMetric<T> {
+public class EuclideanMetric<T extends DataPoint<Double>> extends DistanceMetric<T> {
 
   /**
    * The name of this Distance Metric.
@@ -47,8 +47,8 @@ public class EuclideanMetric<T extends DataPoint> extends DistanceMetric<T> {
    * @return The Euclidean distance between p1 and p2.
    */
   private double absoluteDistance(T p1, T p2){
-    double[] p1Values = p1.getValues();
-    double[] p2Values = p2.getValues();
+    Double[] p1Values = p1.getValues();
+    Double[] p2Values = p2.getValues();
 
     double result = 0;
     for(int i = 0; i < p1Values.length; i++) {
