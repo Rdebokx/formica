@@ -5,7 +5,7 @@ import com.rdebokx.formica.core.DataPoint;
 /**
  * Fruit DataPoint, representing the Weight, Volume, Sweetness and GrowTime of a fruit.
  */
-public class Fruit extends DataPoint {
+public class Fruit extends DataPoint<Double> {
 
   /**
    * Index of Weight property.
@@ -41,12 +41,8 @@ public class Fruit extends DataPoint {
    * @param growTime The grow time of the fruit.
    */
   public Fruit(String name, double weight, double volume, double sweetness, double growTime){
-    super(4);
+    super(weight, volume, sweetness, growTime);
     this.name = name;
-    values[WEIGHT] = weight;
-    values[VOLUME] = volume;
-    values[SWEETNESS] = sweetness;
-    values[GROW_TIME] = growTime;
   }
 
   /**
