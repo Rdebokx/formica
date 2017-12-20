@@ -21,11 +21,11 @@ public abstract class DistanceMetric<T extends DataPoint> {
   }
 
   /**
-   * Get the normalized distance between two DataPoints. This shoudl always be a double value in the range [0, 1].
+   * Get the normalized distance between two DataPoints. This should always be a double value in the range [0, 1].
    * This function will be used by the distance(p1, p2).
-   * @param p1
-   * @param p2
-   * @return
+   * @param p1 DataPoint p1.
+   * @param p2 DataPoint p2.
+   * @return The normalized distance between p1 and p2. This should always be a double value in the range [0, 1].
    */
   protected abstract double normalizedDistance(T p1, T p2);
 }

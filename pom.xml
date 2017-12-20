@@ -12,13 +12,15 @@
     <description>An Ant Colony Optimization Framework that allows you to sort DataPoints using Artificial Intelligence (Swarm Intelligence).</description>
     <url>http://formica.software</url>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
     <licenses>
         <license>
             <name>New BSD License</name>
             <url>https://opensource.org/licenses/BSD-3-Clause</url>
         </license>
     </licenses>
-
     <developers>
         <developer>
             <name>Roy de Bokx</name>
@@ -26,7 +28,6 @@
             <organizationUrl>https://debokxict.nl</organizationUrl>
         </developer>
     </developers>
-
     <scm>
         <connection>scm:git:git://github.com/Rdebokx/formica.git</connection>
         <developerConnection>scm:git:ssh://github.com:Rdebokx/formica.git</developerConnection>
@@ -48,6 +49,32 @@
                         <phase>compile</phase>
                         <goals>
                             <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.0.4</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.3</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
                         </goals>
                     </execution>
                 </executions>

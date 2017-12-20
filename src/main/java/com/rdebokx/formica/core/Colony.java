@@ -37,6 +37,7 @@ public class Colony {
 
   /**
    * Constructor, initializing this colony with a set of Ants and one bucket per provided DataPoint.
+   * @param config The Configuration object to be used by this Colony.
    * @param initialData The data that needs to be sorted by this Colony.
    */
   public Colony(Configuration config, List<DataPoint> initialData){
