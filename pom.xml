@@ -8,6 +8,31 @@
     <artifactId>formica</artifactId>
     <version>0.1.0-SNAPSHOT</version>
 
+    <name>Formica</name>
+    <description>An Ant Colony Optimization Framework that allows you to sort DataPoints using Artificial Intelligence (Swarm Intelligence).</description>
+    <url>http://formica.software</url>
+
+    <licenses>
+        <license>
+            <name>New BSD License</name>
+            <url>https://opensource.org/licenses/BSD-3-Clause</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Roy de Bokx</name>
+            <organization>De Bokx ICT</organization>
+            <organizationUrl>https://debokxict.nl</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/Rdebokx/formica.git</connection>
+        <developerConnection>scm:git:ssh://github.com:Rdebokx/formica.git</developerConnection>
+        <url>https://github.com/Rdebokx/formica</url>
+    </scm>
+
     <build>
         <plugins>
             <plugin>
