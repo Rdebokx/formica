@@ -3,7 +3,7 @@ package com.rdebokx.formica.example;
 import com.rdebokx.formica.core.Colony;
 import com.rdebokx.formica.core.DataPoint;
 import com.rdebokx.formica.execution.Configuration;
-import com.rdebokx.formica.metrics.EuclideanMetric;
+import com.rdebokx.formica.metrics.distance.EuclideanMetric;
 
 import java.util.Arrays;
 import java.util.List;

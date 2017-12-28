@@ -1,8 +1,8 @@
 package com.rdebokx.formica.core;
 
 import com.rdebokx.formica.example.DataPoint2D;
-import com.rdebokx.formica.metrics.DistanceMetric;
-import com.rdebokx.formica.metrics.ManhattanMetric;
+import com.rdebokx.formica.metrics.distance.DistanceMetric;
+import com.rdebokx.formica.metrics.distance.ManhattanMetric;
 import org.junit.Assert;
 import org.junit.Test;
 

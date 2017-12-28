@@ -18,7 +18,7 @@ An very trivial example of how to run Formica:
 import com.rdebokx.formica.core.Colony;
 import com.rdebokx.formica.core.DataPoint;
 import com.rdebokx.formica.execution.Configuration;
-import com.rdebokx.formica.metrics.EuclideanMetric;
+import com.rdebokx.formica.metrics.distance.EuclideanMetric;
 
 import java.util.Arrays;
 import java.util.List;

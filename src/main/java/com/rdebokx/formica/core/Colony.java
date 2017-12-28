@@ -1,9 +1,9 @@
 package com.rdebokx.formica.core;
 
 import com.rdebokx.formica.execution.Configuration;
-import com.rdebokx.formica.metrics.DistanceMetric;
-import com.rdebokx.formica.metrics.EuclideanMetric;
-import com.rdebokx.formica.metrics.ManhattanMetric;
+import com.rdebokx.formica.metrics.distance.DistanceMetric;
+import com.rdebokx.formica.metrics.distance.EuclideanMetric;
+import com.rdebokx.formica.metrics.distance.ManhattanMetric;
 
 import java.util.Arrays;
 import java.util.List;

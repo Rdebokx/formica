@@ -2,7 +2,7 @@ package com.rdebokx.formica.core;
 
 import com.rdebokx.formica.example.DataPoint2D;
 import com.rdebokx.formica.execution.Configuration;
-import com.rdebokx.formica.metrics.ManhattanMetric;
+import com.rdebokx.formica.metrics.distance.ManhattanMetric;
 import com.rdebokx.formica.testhelpers.TestColony;
 import com.rdebokx.formica.testhelpers.TestRandom;
 import org.junit.Test;

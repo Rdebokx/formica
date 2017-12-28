@@ -1,6 +1,6 @@
 package com.rdebokx.formica.core;
 
-import com.rdebokx.formica.metrics.DistanceMetric;
+import com.rdebokx.formica.metrics.distance.DistanceMetric;
 
 import java.util.List;
 

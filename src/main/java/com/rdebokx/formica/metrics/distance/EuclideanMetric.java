@@ -1,4 +1,4 @@
-package com.rdebokx.formica.metrics;
+package com.rdebokx.formica.metrics.distance;
 
 import com.rdebokx.formica.core.DataPoint;
 
