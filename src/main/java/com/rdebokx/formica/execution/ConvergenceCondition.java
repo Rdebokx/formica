@@ -32,7 +32,7 @@ public class ConvergenceCondition implements StopCondition {
   @Override
   public boolean shouldStop(Colony colony){
     boolean enoughDeviation = false;
-    double currentFitness = qualityMetric.getScore(colony.getBuckets(), distanceMetric);
+    double currentFitness = qualityMetric.getScore(colony.getBucketsCopy(), distanceMetric);
     for(int i = 0; i < Math.min(iteration, maxIterations); i++){
       enoughDeviation |= Math.abs(fitnessValues[i] - currentFitness) >= minDeviation;
     }

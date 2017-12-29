@@ -95,10 +95,12 @@ public class Colony {
   }
 
   /**
-   * @return List of all buckets.
+   * This function will return the buckets in this colony. To safeguard integrity of the Colony, this function will
+   * construct a list of copies instead of returning the actual list of buckets used by this Colony.
+   * @return List of copies of all buckets.
    */
-  public List<Bucket> getBuckets() {
-    return this.buckets;
+  public List<Bucket> getBucketsCopy() {
+    return this.buckets.stream().map(bucket -> bucket.copy()).collect(Collectors.toList());
   }
 
 }

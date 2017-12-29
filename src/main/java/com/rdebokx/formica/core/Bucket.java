@@ -44,6 +44,7 @@ public class Bucket<E extends DataPoint<?>> implements Iterable<E> {
   public Bucket(Colony colony, Collection<E> dataPoints){
     this(colony);
     list.addAll(dataPoints);
+    calculateCentroid();
   }
 
   /**
@@ -161,5 +162,14 @@ public class Bucket<E extends DataPoint<?>> implements Iterable<E> {
    */
   public DataPoint getCentroid() {
     return this.centroid;
+  }
+
+  /**
+   * Return a copy of the current bucket. Used for calculating quality scores ed while safeguarding the data integrity
+   * in the Colony.
+   * @return Copied bucket containing the same contents.
+   */
+  public Bucket copy(){
+    return new Bucket(colony, list);
   }
 }

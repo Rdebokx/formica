@@ -17,6 +17,7 @@ An very trivial example of how to run Formica:
 ```java
 import com.rdebokx.formica.core.Colony;
 import com.rdebokx.formica.core.DataPoint;
+import com.rdebokx.formica.core.Bucket;
 import com.rdebokx.formica.execution.Configuration;
 import com.rdebokx.formica.metrics.distance.EuclideanMetric;
 
@@ -39,7 +40,7 @@ public class Example {
     while(System.currentTimeMillis() < startTime + 1000*10){
       colony.nextStep();
     }
-    List<List<DataPoint>> softedBuckets = colony.getBuckets();
+    List<Bucket> sortedBuckets = colony.getBucketsCopy();
   }
 }
 ```

@@ -2,7 +2,6 @@ package com.rdebokx.formica.example;
 
 import com.rdebokx.formica.core.Bucket;
 import com.rdebokx.formica.core.Colony;
-import com.rdebokx.formica.core.DataPoint;
 import com.rdebokx.formica.execution.Configuration;
 import com.rdebokx.formica.metrics.distance.EuclideanMetric;
 
@@ -22,7 +21,7 @@ public class ExampleRunner {
       colony.nextStep();
     }
 
-    List<Bucket> buckets = colony.getBuckets();
+    List<Bucket> buckets = colony.getBucketsCopy();
     for(int i = 0; i < buckets.size(); i++){
       Bucket bucket = buckets.get(i);
       System.out.println("Bucket " + i + ": " + bucket);
