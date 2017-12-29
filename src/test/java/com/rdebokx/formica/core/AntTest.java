@@ -33,13 +33,13 @@ public class AntTest {
 
     Assert.assertNull(ant.getPayload());
     //Don't pick up from empty list
-    ant.pickUp(Arrays.asList());
+    ant.pickUp(new Bucket<>(colony));
     Assert.assertNull(ant.getPayload());
 
     //Don't pick up dp2 from coherent bucket
     randomizer.setIntSeq(1);
     randomizer.setDoubleSeq(0.5, 0.5);
-    List<DataPoint> bucket = new ArrayList<>(Arrays.asList(dp1, dp2, dp3, dp4, dp5));
+    Bucket bucket = new Bucket(colony, dp1, dp2, dp3, dp4, dp5);
     ant.pickUp(bucket);
     Assert.assertNull(ant.getPayload());
     Assert.assertEquals(5, bucket.size());
@@ -48,7 +48,7 @@ public class AntTest {
     //Pick up dp4 from similar bucket with basic prob
     randomizer.setIntSeq(3);
     randomizer.setDoubleSeq(0.5, 0.04);
-    bucket = new ArrayList<>(Arrays.asList(dp1, dp2, dp3, dp4));
+    bucket = new Bucket(colony, dp1, dp2, dp3, dp4);
     ant.pickUp(bucket);
     Assert.assertEquals(dp4, ant.getPayload());
     Assert.assertEquals(3, bucket.size());
@@ -56,13 +56,13 @@ public class AntTest {
 
     //Drop
     randomizer.setDoubleSeq(0);
-    ant.drop(new ArrayList<>());
+    ant.drop(new Bucket<>(colony));
     Assert.assertNull(ant.getPayload());
 
     //Pick up from dissimilar bucket
     randomizer.setIntSeq(0);
     randomizer.setDoubleSeq(0.5, 0.5);
-    bucket = new ArrayList<>(Arrays.asList(dp3, dp6, dp7, dp8));
+    bucket = new Bucket(colony, dp3, dp6, dp7, dp8);
     ant.pickUp(bucket);
     Assert.assertEquals(dp3, ant.getPayload());
     Assert.assertEquals(3, bucket.size());
@@ -76,11 +76,11 @@ public class AntTest {
 
     TestColony colony = new TestColony(config, randomizer, Arrays.asList(dp1, dp2, dp3, dp4, dp5, dp6, dp7, dp8));
     Ant ant = colony.getAnts()[0];
-    pickUp(ant, randomizer, dp2);
+    pickUp(colony, ant, randomizer, dp2);
 
     //Don't drop dp2 at dissimilar bucket
     randomizer.setDoubleSeq(0.5, 0.5);
-    ArrayList<DataPoint> bucket = new ArrayList<>(Arrays.asList(dp6, dp7, dp8));
+    Bucket bucket = new Bucket(colony, dp6, dp7, dp8);
     ant.drop(bucket);
     Assert.assertEquals(dp2, ant.getPayload());
     Assert.assertEquals(3, bucket.size());
@@ -88,27 +88,27 @@ public class AntTest {
 
     //Drop dp2 at dissimilar bucket with basic prob.
     randomizer.setDoubleSeq(0.5, 0.09);
-    bucket = new ArrayList<>(Arrays.asList(dp6, dp7, dp8));
+    bucket = new Bucket(colony, dp6, dp7, dp8);
     ant.drop(bucket);
     Assert.assertNull(ant.getPayload());
     Assert.assertEquals(4, bucket.size());
     Assert.assertTrue(bucket.contains(dp2));
 
-    pickUp(ant, randomizer, dp2);
+    pickUp(colony, ant, randomizer, dp2);
 
     //Drop with basic prob eg if empty bucket
     randomizer.setDoubleSeq(0.09);
-    bucket = new ArrayList<>();
+    bucket = new Bucket(colony);
     ant.drop(bucket);
     Assert.assertNull(ant.getPayload());
     Assert.assertEquals(1, bucket.size());
     Assert.assertTrue(bucket.contains(dp2));
 
-    pickUp(ant, randomizer, dp2);
+    pickUp(colony, ant, randomizer, dp2);
 
     //Don't always drop in empty bucket
     randomizer.setDoubleSeq(0.5, 0.5);
-    bucket = new ArrayList<>();
+    bucket = new Bucket(colony);
     ant.drop(bucket);
     Assert.assertEquals(dp2, ant.getPayload());
     Assert.assertEquals(0, bucket.size());
@@ -116,17 +116,17 @@ public class AntTest {
 
     //Drop at similar bucket
     randomizer.setDoubleSeq(0.5, 0.5);
-    bucket = new ArrayList<>(Arrays.asList(dp1, dp3, dp4, dp5));
+    bucket = new Bucket(colony, dp1, dp3, dp4, dp5);
     ant.drop(bucket);
     Assert.assertNull(ant.getPayload());
     Assert.assertEquals(5, bucket.size());
     Assert.assertTrue(bucket.contains(dp2));
   }
 
-  private void pickUp(Ant ant, TestRandom randomizer, DataPoint dp){
+  private void pickUp(Colony colony, Ant ant, TestRandom randomizer, DataPoint dp){
     randomizer.setIntSeq(0);
     randomizer.setDoubleSeq(0, 0.04);
-    ant.pickUp(new ArrayList<>(Arrays.asList(dp)));
+    ant.pickUp(new Bucket<>(colony, dp));
     Assert.assertEquals(dp, ant.getPayload());
   }
 

@@ -21,7 +21,7 @@ public class Colony {
    * List of all buckets.
    * TODO: monitor that this list is not claiming too much memory.
    */
-  private List<List<DataPoint>> buckets;
+  private List<Bucket> buckets;
 
   protected final Configuration config;
 
@@ -70,7 +70,7 @@ public class Colony {
    * @param initialData List of DataPoints that needs sorting by this Colony.
    */
   private void initializeBuckets(List<DataPoint> initialData){
-    buckets = initialData.stream().map(dataPoint -> Arrays.asList(dataPoint)).collect(Collectors.toList());
+    buckets = initialData.stream().map(dataPoint -> new Bucket(this, dataPoint)).collect(Collectors.toList());
   }
 
   /**
@@ -90,14 +90,14 @@ public class Colony {
    */
   public void nextStep() {
     Ant nextAnt = ants[randomizer.nextInt(ants.length)];
-    List<DataPoint> nextBucket = buckets.get(randomizer.nextInt(buckets.size()));
+    Bucket nextBucket = buckets.get(randomizer.nextInt(buckets.size()));
     nextAnt.move(nextBucket);
   }
 
   /**
    * @return List of all buckets.
    */
-  public List<List<DataPoint>> getBuckets() {
+  public List<Bucket> getBuckets() {
     return this.buckets;
   }
 

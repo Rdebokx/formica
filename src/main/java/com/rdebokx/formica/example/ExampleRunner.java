@@ -1,5 +1,6 @@
 package com.rdebokx.formica.example;
 
+import com.rdebokx.formica.core.Bucket;
 import com.rdebokx.formica.core.Colony;
 import com.rdebokx.formica.core.DataPoint;
 import com.rdebokx.formica.execution.Configuration;
@@ -21,9 +22,9 @@ public class ExampleRunner {
       colony.nextStep();
     }
 
-    List<List<DataPoint>> buckets = colony.getBuckets();
+    List<Bucket> buckets = colony.getBuckets();
     for(int i = 0; i < buckets.size(); i++){
-      List<DataPoint> bucket = buckets.get(i);
+      Bucket bucket = buckets.get(i);
       System.out.println("Bucket " + i + ": " + bucket);
     }
   }
