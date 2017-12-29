@@ -16,6 +16,26 @@ public class BucketTest {
   private DataPoint2D dp2 = new DataPoint2D(1, 25);
   private DataPoint2D dp3 = new DataPoint2D(-1, 50);
   private DataPoint2D dp4 = new DataPoint2D(0, 50);
+  private DataPoint2D dp5 = new DataPoint2D(3, 100);
+  private DataPoint2D dp6 = new DataPoint2D(2, 100);
+
+  @Test
+  public void testCalculateCentroidBasic(){
+    Configuration config = new Configuration(ManhattanMetric.METRIC_NAME, 1, 0.05, 0.25);
+    TestRandom randomizer = new TestRandom();
+    TestColony colony = new TestColony(config, randomizer, Arrays.asList(dp1, dp2, dp3, dp4));
+
+    Bucket bucket = new Bucket(colony);
+    Assert.assertNull(bucket.getCentroid());
+
+    bucket.add(dp1);
+    Assert.assertEquals(dp1, bucket.getCentroid());
+
+    bucket.add(dp2);
+    Assert.assertEquals(dp1, bucket.getCentroid());
+
+    Assert.assertEquals(dp2, new Bucket(colony, dp1, dp2));
+  }
 
   @Test
   public void testCalculateCentroid(){
@@ -26,11 +46,15 @@ public class BucketTest {
     Bucket<DataPoint2D> bucket = new Bucket<>(colony, dp1, dp1, dp3, dp4);
     Assert.assertEquals(dp2, bucket.getCentroid());
 
-    //TODO: add some
+    //Add some
+    bucket.add(dp5);
+    bucket.add(dp6);
+    Assert.assertEquals(dp4, bucket.getCentroid());
 
-    //TODO: remove some
-
-
-    Assert.fail("TODO");
+    //Remove some
+    bucket.remove(0); //Remove dp1
+    bucket.remove(0); //Remove dp2
+    bucket.remove(0); //Remove dp3
+    Assert.assertEquals(dp6, bucket.getCentroid());
   }
 }
