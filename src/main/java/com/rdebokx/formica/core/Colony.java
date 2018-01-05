@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-public class Colony {
+public class Colony<T extends DataPoint<?>> {
 
   /**
    * List of all the ants in this Colony.
@@ -21,14 +21,14 @@ public class Colony {
    * List of all buckets.
    * TODO: monitor that this list is not claiming too much memory.
    */
-  private List<Bucket> buckets;
+  private List<Bucket<T>> buckets;
 
   protected final Configuration config;
 
   /**
    * The DistanceMetric used by the ants in this colony.
    */
-  protected final DistanceMetric distanceCalculator;
+  protected final DistanceMetric<T> distanceCalculator;
 
   /**
    * The Random object used by the ants in this colony.
@@ -40,7 +40,7 @@ public class Colony {
    * @param config The Configuration object to be used by this Colony.
    * @param initialData The data that needs to be sorted by this Colony.
    */
-  public Colony(Configuration config, List<DataPoint> initialData){
+  public Colony(Configuration config, List<T> initialData){
     this.config = config;
     this.distanceCalculator = createDistanceMetric(initialData);
     this.randomizer = new Random();
@@ -53,7 +53,7 @@ public class Colony {
    * @param initialData The list of initial DataPoints in this colony, passed on to metric constructor if needed.
    * @return The created DistanceMetric.
    */
-  private DistanceMetric createDistanceMetric(List<DataPoint> initialData){
+  private DistanceMetric createDistanceMetric(List<T> initialData){
     DistanceMetric result = null;
     switch(config.getMetric()){
       case EuclideanMetric.METRIC_NAME:
@@ -69,8 +69,8 @@ public class Colony {
    * Helper method for initializing the list of buckets with one bucket per DataPoint provided.
    * @param initialData List of DataPoints that needs sorting by this Colony.
    */
-  private void initializeBuckets(List<DataPoint> initialData){
-    buckets = initialData.stream().map(dataPoint -> new Bucket(this, dataPoint)).collect(Collectors.toList());
+  private void initializeBuckets(List<T> initialData){
+    buckets = initialData.stream().map(dataPoint -> new Bucket<T>(this, dataPoint)).collect(Collectors.toList());
   }
 
   /**

@@ -14,6 +14,6 @@ public abstract class QualityMetric<T extends DataPoint<?>> {
     this.distanceMetric = distanceMetric;
   }
 
-  public abstract double getScore(List<Bucket<T>> clustering, DistanceMetric<T> metric);
+  public abstract double getScore(List<Bucket<T>> clustering);
 
 }

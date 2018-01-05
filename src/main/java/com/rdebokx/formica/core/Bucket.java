@@ -1,6 +1,5 @@
 package com.rdebokx.formica.core;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -142,11 +141,11 @@ public class Bucket<E extends DataPoint<?>> implements Iterable<E> {
    * any type. If the context-specif DataPoints you are using allow you to recalculate the centroid in a more efficient
    * way, it is advised to extend this class for your type of DataPoints and override this method.
    */
-  protected void calculateCentroid() {
+  private void calculateCentroid() {
     if(this.isEmpty()){
       centroid = null;
     } else {
-      double minDistanceToBucket = centroid.avgDistanceToBucket(this, colony.distanceCalculator);
+      double minDistanceToBucket = Double.MAX_VALUE;
       for (DataPoint dataPoint : list) {
         double distance = dataPoint.avgDistanceToBucket(this, colony.distanceCalculator);
         if (distance < minDistanceToBucket) {

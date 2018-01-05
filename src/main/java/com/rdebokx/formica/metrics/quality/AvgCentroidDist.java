@@ -6,16 +6,16 @@ import com.rdebokx.formica.metrics.distance.DistanceMetric;
 
 import java.util.List;
 
-public class AvgCentroidDistance<T extends DataPoint<?>> extends QualityMetric<T> {
+public class AvgCentroidDist<T extends DataPoint<?>> extends QualityMetric<T> {
 
-  public AvgCentroidDistance(DistanceMetric<T> distanceMetric){
+  public AvgCentroidDist(DistanceMetric<T> distanceMetric){
     super(distanceMetric);
   }
 
-  public double getScore(List<Bucket<T>> clustering, DistanceMetric<T> metric) {
+  public double getScore(List<Bucket<T>> clustering){
     double result = 0;
     for(Bucket<?> bucket : clustering){
-      result = bucket.getCentroid().avgDistanceToBucket(bucket, metric) / clustering.size();
+      result = bucket.getCentroid().avgDistanceToBucket(bucket, distanceMetric) / clustering.size();
     }
     return result;
   }
