@@ -15,8 +15,9 @@ public class AvgCentroidDist<T extends DataPoint<?>> extends QualityMetric<T> {
   public double getScore(List<Bucket<T>> clustering){
     double result = 0;
     for(Bucket<?> bucket : clustering){
-      result = bucket.getCentroid().avgDistanceToBucket(bucket, distanceMetric) / clustering.size();
+      result += bucket.getCentroid().avgDistanceToBucket(bucket, distanceMetric) / clustering.size();
     }
+
     return result;
   }
 }
