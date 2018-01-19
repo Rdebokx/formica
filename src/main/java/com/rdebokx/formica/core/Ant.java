@@ -1,11 +1,9 @@
 package com.rdebokx.formica.core;
 
-import java.util.List;
-
 /**
  * Ant class, representing an ant that can pick up and drop DataPoints when moving from bucket to bucket, based on similarity of (or to) the DataPoints in the bucket.
  */
-public class Ant {
+public class Ant<T> {
 
   /**
    * The Colony that this ant is currently part of.
@@ -16,7 +14,7 @@ public class Ant {
   /**
    * The DataPoint that the ant is currently carrying.
    */
-  private DataPoint payload;
+  private DataPoint<T> payload;
 
   /**
    * Constructor, constructing an Ant for the provided Colony.
@@ -31,7 +29,7 @@ public class Ant {
    * Note that after this function finished, the ant will have no notion of which bucket it is currently at.
    * @param nextBucket The bucket that this ant is moving to.
    */
-  public void move(List<DataPoint> nextBucket) {
+  public void move(Bucket<DataPoint<T>> nextBucket) {
     if(payload == null){
       pickUp(nextBucket);
     } else {
@@ -47,7 +45,7 @@ public class Ant {
    * With a probability P as defined by Configuration.basicPickupProb there is a chance that the ant will pick up the randomly selected DataPoint, regardless of the contents of the nextBucket.
    * @param nextBucket The bucket that this ant has moved to and a DataPoint may or may not be picked up from.
    */
-  protected void pickUp(List<DataPoint> nextBucket){
+  protected <U extends DataPoint<T>> void pickUp(Bucket<DataPoint<T>> nextBucket){
     if(payload != null){
       throw new RuntimeException("Ant is already carrying payload.");
     }
@@ -69,7 +67,7 @@ public class Ant {
    * With a probability P as defined by Configuration.basicDropProb, the ant will drop its current payload, regardless of the contents the nextBucket.
    * @param nextBucket The bucket that his ant may or may not its current payload in.
    */
-  protected void drop(List<DataPoint> nextBucket){
+  protected void drop(Bucket<DataPoint<T>> nextBucket){
     if(payload == null){
       throw new RuntimeException("Ant has no payload to drop.");
     }

@@ -1,16 +1,16 @@
 package com.rdebokx.formica.core;
 
 import com.rdebokx.formica.execution.Configuration;
-import com.rdebokx.formica.metrics.DistanceMetric;
-import com.rdebokx.formica.metrics.EuclideanMetric;
-import com.rdebokx.formica.metrics.ManhattanMetric;
+import com.rdebokx.formica.metrics.distance.DistanceMetric;
+import com.rdebokx.formica.metrics.distance.EuclideanMetric;
+import com.rdebokx.formica.metrics.distance.ManhattanMetric;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-public class Colony {
+public class Colony<T extends DataPoint<?>> {
 
   /**
    * List of all the ants in this Colony.
@@ -21,14 +21,14 @@ public class Colony {
    * List of all buckets.
    * TODO: monitor that this list is not claiming too much memory.
    */
-  private List<List<DataPoint>> buckets;
+  private List<Bucket<T>> buckets;
 
   protected final Configuration config;
 
   /**
    * The DistanceMetric used by the ants in this colony.
    */
-  protected final DistanceMetric distanceCalculator;
+  protected final DistanceMetric<T> distanceCalculator;
 
   /**
    * The Random object used by the ants in this colony.
@@ -40,7 +40,7 @@ public class Colony {
    * @param config The Configuration object to be used by this Colony.
    * @param initialData The data that needs to be sorted by this Colony.
    */
-  public Colony(Configuration config, List<DataPoint> initialData){
+  public Colony(Configuration config, List<T> initialData){
     this.config = config;
     this.distanceCalculator = createDistanceMetric(initialData);
     this.randomizer = new Random();
@@ -53,7 +53,7 @@ public class Colony {
    * @param initialData The list of initial DataPoints in this colony, passed on to metric constructor if needed.
    * @return The created DistanceMetric.
    */
-  private DistanceMetric createDistanceMetric(List<DataPoint> initialData){
+  private DistanceMetric createDistanceMetric(List<T> initialData){
     DistanceMetric result = null;
     switch(config.getMetric()){
       case EuclideanMetric.METRIC_NAME:
@@ -69,8 +69,8 @@ public class Colony {
    * Helper method for initializing the list of buckets with one bucket per DataPoint provided.
    * @param initialData List of DataPoints that needs sorting by this Colony.
    */
-  private void initializeBuckets(List<DataPoint> initialData){
-    buckets = initialData.stream().map(dataPoint -> Arrays.asList(dataPoint)).collect(Collectors.toList());
+  private void initializeBuckets(List<T> initialData){
+    buckets = initialData.stream().map(dataPoint -> new Bucket<T>(this, dataPoint)).collect(Collectors.toList());
   }
 
   /**
@@ -90,15 +90,17 @@ public class Colony {
    */
   public void nextStep() {
     Ant nextAnt = ants[randomizer.nextInt(ants.length)];
-    List<DataPoint> nextBucket = buckets.get(randomizer.nextInt(buckets.size()));
+    Bucket nextBucket = buckets.get(randomizer.nextInt(buckets.size()));
     nextAnt.move(nextBucket);
   }
 
   /**
-   * @return List of all buckets.
+   * This function will return the buckets in this colony. To safeguard integrity of the Colony, this function will
+   * construct a list of copies instead of returning the actual list of buckets used by this Colony.
+   * @return List of copies of all buckets.
    */
-  public List<List<DataPoint>> getBuckets() {
-    return this.buckets;
+  public List<Bucket> getBucketsCopy() {
+    return this.buckets.stream().map(bucket -> bucket.copy()).collect(Collectors.toList());
   }
 
 }

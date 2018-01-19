@@ -1,8 +1,8 @@
-package com.rdebokx.formica.metrics;
+package com.rdebokx.formica.metrics.distance;
 
 import com.rdebokx.formica.core.DataPoint;
 
-public abstract class DistanceMetric<T extends DataPoint> {
+public abstract class DistanceMetric<T extends DataPoint<?>> {
 
   /**
    * Get the normalized distance between two DataPoints. This should always be a double value in the range [0, 1].

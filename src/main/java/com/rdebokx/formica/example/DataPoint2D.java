@@ -50,4 +50,9 @@ public class DataPoint2D extends DataPoint<Double> {
   public Double getY() {
     return values[1];
   }
+
+  @Override
+  public String toString() {
+    return "DataPoint2D(" + getX() + ", " + getY() + ")";
+  }
 }
