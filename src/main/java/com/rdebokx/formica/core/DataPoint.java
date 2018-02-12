@@ -44,5 +44,14 @@ public abstract class DataPoint<T> {
     return distancesCount > 0 ? totalDistance / distancesCount : -1;
   }
 
+  @Override
+  public String toString() {
+    String result = "[";
+    for(T value : values){
+      result += value + ",";
+    }
+    return result.substring(0, result.length() - 1) + "]";
+  }
+
 }
 

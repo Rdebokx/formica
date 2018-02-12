@@ -1,6 +1,7 @@
 package com.rdebokx.formica.core;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * Bucket Class containing a collection of DataPoints.
@@ -170,5 +171,9 @@ public class Bucket<E extends DataPoint<?>> implements Iterable<E> {
    */
   public Bucket copy(){
     return new Bucket(colony, list);
+  }
+
+  public Stream<E> stream() {
+    return list.stream();
   }
 }
