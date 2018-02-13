@@ -23,17 +23,24 @@ public class Configuration {
   private final double basicDropProb;
 
   /**
+   * The StopCondition to be used by the colony to check whether the algorithm should be terminated.
+   */
+  private final StopCondition stopCondition;
+
+  /**
    * Constructor, constructing a new Configuration object with the given parameters.
    * @param metric The name of the DistanceMetric to be used.
    * @param nrOfAnts The number of ants in the Colony.
    * @param basicPickupProb The probability of an ant picking up a DataPoint from a (non-empty) bucket regardless of the contents of the bucket.
    * @param basicDropProb The probability of an ant dropping it's current payload regardless of the contents of the bucket.
+   * @param stopCondition The StopCondition to be used by the colony to check whether the algorithm should be terminated.
    */
-  public Configuration(String metric, int nrOfAnts, double basicPickupProb, double basicDropProb){
+  public Configuration(String metric, int nrOfAnts, double basicPickupProb, double basicDropProb, StopCondition stopCondition){
     this.metric = metric;
     this.nrOfAnts = nrOfAnts;
     this.basicPickupProb = basicPickupProb;
     this.basicDropProb = basicDropProb;
+    this.stopCondition = stopCondition;
   }
 
   /**
@@ -62,5 +69,9 @@ public class Configuration {
    */
   public double getBasicDropProb() {
     return basicDropProb;
+  }
+
+  public StopCondition getStopCondition() {
+    return stopCondition;
   }
 }

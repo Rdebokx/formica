@@ -3,6 +3,7 @@ package com.rdebokx.formica.core;
 import com.rdebokx.formica.example.DataPoint2D;
 import com.rdebokx.formica.execution.Configuration;
 import com.rdebokx.formica.metrics.distance.ManhattanMetric;
+import com.rdebokx.formica.testhelpers.DummyCondition;
 import com.rdebokx.formica.testhelpers.TestColony;
 import com.rdebokx.formica.testhelpers.TestRandom;
 import org.junit.Assert;
@@ -21,7 +22,7 @@ public class BucketTest {
 
   @Test
   public void testCalculateCentroidBasic(){
-    Configuration config = new Configuration(ManhattanMetric.METRIC_NAME, 1, 0.05, 0.25);
+    Configuration config = new Configuration(ManhattanMetric.METRIC_NAME, 1, 0.05, 0.25, new DummyCondition());
     TestRandom randomizer = new TestRandom();
     TestColony colony = new TestColony(config, randomizer, Arrays.asList(dp1, dp2, dp3, dp4));
 
@@ -39,7 +40,7 @@ public class BucketTest {
 
   @Test
   public void testCalculateCentroid(){
-    Configuration config = new Configuration(ManhattanMetric.METRIC_NAME, 1, 0.05, 0.25);
+    Configuration config = new Configuration(ManhattanMetric.METRIC_NAME, 1, 0.05, 0.25, new DummyCondition());
     TestRandom randomizer = new TestRandom();
     TestColony colony = new TestColony(config, randomizer, Arrays.asList(dp1, dp2, dp3, dp4, dp5, dp6));
 

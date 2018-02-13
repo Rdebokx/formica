@@ -4,6 +4,7 @@ import com.rdebokx.formica.example.DataPoint2D;
 import com.rdebokx.formica.execution.Configuration;
 import com.rdebokx.formica.metrics.distance.DistanceMetric;
 import com.rdebokx.formica.metrics.distance.ManhattanMetric;
+import com.rdebokx.formica.testhelpers.DummyCondition;
 import com.rdebokx.formica.testhelpers.TestColony;
 import com.rdebokx.formica.testhelpers.TestRandom;
 import org.junit.Assert;
@@ -22,7 +23,7 @@ public class DataPointTest {
       new DataPoint2D(9, 9),
       new DataPoint2D(9, 9)
     );
-    Configuration config = new Configuration(ManhattanMetric.METRIC_NAME, 1, 0.05, 0.25);
+    Configuration config = new Configuration(ManhattanMetric.METRIC_NAME, 1, 0.05, 0.25, new DummyCondition());
     TestRandom randomizer = new TestRandom();
     Colony colony = new TestColony(config, randomizer, dataPoints);
     Bucket bucket = new Bucket(colony, dataPoints);

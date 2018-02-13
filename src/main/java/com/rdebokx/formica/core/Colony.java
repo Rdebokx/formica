@@ -5,6 +5,7 @@ import com.rdebokx.formica.metrics.distance.DistanceMetric;
 import com.rdebokx.formica.metrics.distance.EuclideanMetric;
 import com.rdebokx.formica.metrics.distance.ManhattanMetric;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -34,6 +35,11 @@ public class Colony<T extends DataPoint<?>> {
    * The Random object used by the ants in this colony.
    */
   protected Random randomizer;
+
+  /**
+   * List with all Ants that are still carrying a payload, while the algorithm was ordered to stop.
+   */
+  protected List<Ant> terminatingAnts;
 
   /**
    * Constructor, initializing this colony with a set of Ants and one bucket per provided DataPoint.
@@ -88,10 +94,50 @@ public class Colony<T extends DataPoint<?>> {
    * This method will select a random ant from this Colony and move it to a randomly picked bucket where it may or may not pick up or drop a DataPoint,
    * depending on the contents of the new bucket.
    */
-  public void nextStep() {
-    Ant nextAnt = ants[randomizer.nextInt(ants.length)];
+  public boolean nextStep() {
+    if(terminatingAnts == null){
+      doNextStep();
+      return true;
+    } else if(terminatingAnts.size() > 0){
+      windDown();
+      return true;
+    } else {
+      //TODO: log that this colony has terminated
+      return false;
+    }
+  }
+
+  /**
+   * Method for making this colony perform the next step, iff the stopping condition in the config of this colony was not met.
+   * Iff the stopping condition was met, the stop() function is called, follwed by another call to the nextStep() function which should be directed to the windDown() function.
+   * Otherwise, a rand om Ant in this colony will be picked and moved across the buckets.
+   */
+  private void doNextStep() {
+    if(config.getStopCondition().shouldStop(this)){
+      stop();
+      nextStep();
+    } else {
+      Ant nextAnt = ants[randomizer.nextInt(ants.length)];
+      Bucket nextBucket = buckets.get(randomizer.nextInt(buckets.size()));
+      nextAnt.move(nextBucket);
+    }
+  }
+
+  /**
+   * This method performs a next step in winding down this colony, which is done by picking a random Ant of this colony that is still carrying a payload
+   * and moving it to a random bucket to stochastically drop its payload. Note that this is stochastic, meaning that the Ant might not drop its payload, eg.
+   * when the contents of the bucket are not similar enough to this ant.
+   * Iff the randomly picked ant actually dropped its payload, it is being removed from the terminatingAnts list and ignored in future calls to this function.
+   */
+  private void windDown(){
+    int antIndex = randomizer.nextInt(terminatingAnts.size());
+    Ant antToTerminate = terminatingAnts.get(antIndex);
     Bucket nextBucket = buckets.get(randomizer.nextInt(buckets.size()));
-    nextAnt.move(nextBucket);
+    antToTerminate.drop(nextBucket);
+
+    if(antToTerminate.getPayload() == null){
+      terminatingAnts.remove(antIndex);
+    }
   }
 
   /**
@@ -101,6 +147,34 @@ public class Colony<T extends DataPoint<?>> {
    */
   public List<Bucket> getBucketsCopy() {
     return this.buckets.stream().map(bucket -> bucket.copy()).collect(Collectors.toList());
+  }
+
+  /**
+   * This method will set this colony in shut down mode. This means that every consecutive step will only be focussed on
+   * moving Ants that are still carrying a payload across the buckets until no more Ants are carrying a payload.
+   * As part of this function, a list of Ants that are still carrying payloads is constructed which will be used is the consecutive steps.
+   */
+  public void stop(){
+    terminatingAnts = new ArrayList<>();
+    for(Ant ant : ants){
+      if(ant.getPayload() != null){
+        terminatingAnts.add(ant);
+      }
+    }
+  }
+
+  /**
+   * @return Whether this colony is in the process of stopping, meaning that consecutive steps will be focussed on reducing the number Ants that are carrying a payload.
+   */
+  public boolean isStopping() {
+    return terminatingAnts != null && !terminatingAnts.isEmpty();
+  }
+
+  /**
+   * @return Whether this colony has stopped, meaning that the stop() function has been called an no more Ants are carrying a payload.
+   */
+  public boolean hasStopped() {
+    return terminatingAnts != null && terminatingAnts.isEmpty();
   }
 
 }

@@ -3,6 +3,7 @@ package com.rdebokx.formica.core;
 import com.rdebokx.formica.example.DataPoint2D;
 import com.rdebokx.formica.execution.Configuration;
 import com.rdebokx.formica.metrics.distance.ManhattanMetric;
+import com.rdebokx.formica.testhelpers.DummyCondition;
 import com.rdebokx.formica.testhelpers.TestColony;
 import com.rdebokx.formica.testhelpers.TestRandom;
 import org.junit.Test;
@@ -25,7 +26,7 @@ public class AntTest {
 
   @Test
   public void testPickup() {
-    Configuration config = new Configuration(ManhattanMetric.METRIC_NAME, 1, 0.05, 0.25);
+    Configuration config = new Configuration(ManhattanMetric.METRIC_NAME, 1, 0.05, 0.25, new DummyCondition());
     TestRandom randomizer = new TestRandom();
 
     TestColony colony = new TestColony(config, randomizer, Arrays.asList(dp1, dp2, dp3, dp4, dp5, dp6, dp7, dp8));
@@ -71,7 +72,7 @@ public class AntTest {
 
   @Test
   public void testDrop() {
-    Configuration config = new Configuration(ManhattanMetric.METRIC_NAME, 1, 0.05, 0.1);
+    Configuration config = new Configuration(ManhattanMetric.METRIC_NAME, 1, 0.05, 0.1, new DummyCondition());
     TestRandom randomizer = new TestRandom();
 
     TestColony colony = new TestColony(config, randomizer, Arrays.asList(dp1, dp2, dp3, dp4, dp5, dp6, dp7, dp8));
