@@ -15,21 +15,9 @@ import java.util.List;
 
 public class AntTest {
 
-  private DataPoint2D dp1 = new DataPoint2D(1, 1);
-  private DataPoint2D dp2 = new DataPoint2D(1, 1);
-  private DataPoint2D dp3 = new DataPoint2D(1.1, 1.1);
-  private DataPoint2D dp4 = new DataPoint2D(1.2, 1.2);
-  private DataPoint2D dp5 = new DataPoint2D(1.3, 1.3);
-  private DataPoint2D dp6 = new DataPoint2D(5.1, 5.2);
-  private DataPoint2D dp7 = new DataPoint2D(5.2, 5.3);
-  private DataPoint2D dp8 = new DataPoint2D(5.3, 5.5);
-
   @Test
   public void testPickup() {
-    Configuration config = new Configuration(ManhattanMetric.METRIC_NAME, 1, 0.05, 0.25, new DummyCondition());
-    TestRandom randomizer = new TestRandom();
-
-    TestColony colony = new TestColony(config, randomizer, Arrays.asList(dp1, dp2, dp3, dp4, dp5, dp6, dp7, dp8));
+    TestColony colony = ColonyTest.getDefaultTestColony();
     Ant ant = colony.getAnts()[0];
 
     Assert.assertNull(ant.getPayload());
@@ -38,90 +26,87 @@ public class AntTest {
     Assert.assertNull(ant.getPayload());
 
     //Don't pick up dp2 from coherent bucket
-    randomizer.setIntSeq(1);
-    randomizer.setDoubleSeq(0.5, 0.5);
-    Bucket bucket = new Bucket(colony, dp1, dp2, dp3, dp4, dp5);
+    colony.getRandomizer().setIntSeq(1);
+    colony.getRandomizer().setDoubleSeq(0.5, 0.5);
+    Bucket bucket = new Bucket(colony, ColonyTest.TEST_DATA_POINTS.subList(0, 5));
     ant.pickUp(bucket);
     Assert.assertNull(ant.getPayload());
     Assert.assertEquals(5, bucket.size());
-    Assert.assertTrue(bucket.contains(dp2));
+    Assert.assertTrue(bucket.contains(ColonyTest.TEST_DATA_POINTS.get(1)));
 
     //Pick up dp4 from similar bucket with basic prob
-    randomizer.setIntSeq(3);
-    randomizer.setDoubleSeq(0.5, 0.04);
-    bucket = new Bucket(colony, dp1, dp2, dp3, dp4);
+    colony.getRandomizer().setIntSeq(3);
+    colony.getRandomizer().setDoubleSeq(0.5, 0.04);
+    bucket = new Bucket(colony, ColonyTest.TEST_DATA_POINTS.subList(0, 4));
     ant.pickUp(bucket);
-    Assert.assertEquals(dp4, ant.getPayload());
+    Assert.assertEquals(ColonyTest.dp4, ant.getPayload());
     Assert.assertEquals(3, bucket.size());
-    Assert.assertFalse(bucket.contains(dp4));
+    Assert.assertFalse(bucket.contains(ColonyTest.dp4));
 
     //Drop
-    randomizer.setDoubleSeq(0);
+    colony.getRandomizer().setDoubleSeq(0);
     ant.drop(new Bucket<>(colony));
     Assert.assertNull(ant.getPayload());
 
     //Pick up from dissimilar bucket
-    randomizer.setIntSeq(0);
-    randomizer.setDoubleSeq(0.5, 0.5);
-    bucket = new Bucket(colony, dp3, dp6, dp7, dp8);
+    colony.getRandomizer().setIntSeq(0);
+    colony.getRandomizer().setDoubleSeq(0.5, 0.5);
+    bucket = new Bucket(colony, ColonyTest.dp3, ColonyTest.dp6, ColonyTest.dp7, ColonyTest.dp8);
     ant.pickUp(bucket);
-    Assert.assertEquals(dp3, ant.getPayload());
+    Assert.assertEquals(ColonyTest.dp3, ant.getPayload());
     Assert.assertEquals(3, bucket.size());
-    Assert.assertFalse(bucket.contains(dp3));
+    Assert.assertFalse(bucket.contains(ColonyTest.dp3));
   }
 
   @Test
   public void testDrop() {
-    Configuration config = new Configuration(ManhattanMetric.METRIC_NAME, 1, 0.05, 0.1, new DummyCondition());
-    TestRandom randomizer = new TestRandom();
-
-    TestColony colony = new TestColony(config, randomizer, Arrays.asList(dp1, dp2, dp3, dp4, dp5, dp6, dp7, dp8));
+    TestColony colony = ColonyTest.getDefaultTestColony();
     Ant ant = colony.getAnts()[0];
-    pickUp(colony, ant, randomizer, dp2);
+    pickUp(colony, ant, colony.getRandomizer(), ColonyTest.dp2);
 
     //Don't drop dp2 at dissimilar bucket
-    randomizer.setDoubleSeq(0.5, 0.5);
-    Bucket bucket = new Bucket(colony, dp6, dp7, dp8);
+    colony.getRandomizer().setDoubleSeq(0.5, 0.5);
+    Bucket bucket = new Bucket(colony, ColonyTest.dp6, ColonyTest.dp7, ColonyTest.dp8);
     ant.drop(bucket);
-    Assert.assertEquals(dp2, ant.getPayload());
+    Assert.assertEquals(ColonyTest.dp2, ant.getPayload());
     Assert.assertEquals(3, bucket.size());
-    Assert.assertFalse(bucket.contains(dp2));
+    Assert.assertFalse(bucket.contains(ColonyTest.dp2));
 
     //Drop dp2 at dissimilar bucket with basic prob.
-    randomizer.setDoubleSeq(0.5, 0.09);
-    bucket = new Bucket(colony, dp6, dp7, dp8);
+    colony.getRandomizer().setDoubleSeq(0.5, 0.09);
+    bucket = new Bucket(colony, ColonyTest.dp6, ColonyTest.dp7, ColonyTest.dp8);
     ant.drop(bucket);
     Assert.assertNull(ant.getPayload());
     Assert.assertEquals(4, bucket.size());
-    Assert.assertTrue(bucket.contains(dp2));
+    Assert.assertTrue(bucket.contains(ColonyTest.dp2));
 
-    pickUp(colony, ant, randomizer, dp2);
+    pickUp(colony, ant, colony.getRandomizer(), ColonyTest.dp2);
 
     //Drop with basic prob eg if empty bucket
-    randomizer.setDoubleSeq(0.09);
+    colony.getRandomizer().setDoubleSeq(0.09);
     bucket = new Bucket(colony);
     ant.drop(bucket);
     Assert.assertNull(ant.getPayload());
     Assert.assertEquals(1, bucket.size());
-    Assert.assertTrue(bucket.contains(dp2));
+    Assert.assertTrue(bucket.contains(ColonyTest.dp2));
 
-    pickUp(colony, ant, randomizer, dp2);
+    pickUp(colony, ant, colony.getRandomizer(), ColonyTest.dp2);
 
     //Don't always drop in empty bucket
-    randomizer.setDoubleSeq(0.5, 0.5);
+    colony.getRandomizer().setDoubleSeq(0.5, 0.5);
     bucket = new Bucket(colony);
     ant.drop(bucket);
-    Assert.assertEquals(dp2, ant.getPayload());
+    Assert.assertEquals(ColonyTest.dp2, ant.getPayload());
     Assert.assertEquals(0, bucket.size());
-    Assert.assertFalse(bucket.contains(dp2));
+    Assert.assertFalse(bucket.contains(ColonyTest.dp2));
 
     //Drop at similar bucket
-    randomizer.setDoubleSeq(0.5, 0.5);
-    bucket = new Bucket(colony, dp1, dp3, dp4, dp5);
+    colony.getRandomizer().setDoubleSeq(0.5, 0.5);
+    bucket = new Bucket(colony, ColonyTest.dp1, ColonyTest.dp3, ColonyTest.dp4, ColonyTest.dp5);
     ant.drop(bucket);
     Assert.assertNull(ant.getPayload());
     Assert.assertEquals(5, bucket.size());
-    Assert.assertTrue(bucket.contains(dp2));
+    Assert.assertTrue(bucket.contains(ColonyTest.dp2));
   }
 
   private void pickUp(Colony colony, Ant ant, TestRandom randomizer, DataPoint dp){

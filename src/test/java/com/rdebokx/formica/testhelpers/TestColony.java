@@ -16,12 +16,11 @@ public class TestColony<T extends DataPoint<?>> extends Colony<T> {
   /**
    * Constructor, constructing a TestColony which is essentially a non-stochastic Colony.
    * @param config The configuration to be used by this colony.
-   * @param randomizer The TestRandom object to be used as randomizer. Allows you to define the stochastic behavior of the Colony.
    * @param initialData The list of initial DataPoints.
    */
-  public TestColony(Configuration config, TestRandom randomizer, List<T> initialData){
+  public TestColony(Configuration config, List<T> initialData){
     super(config, initialData);
-    this.randomizer = randomizer;
+    this.randomizer = new TestRandom();
   }
 
   /**
@@ -29,8 +28,18 @@ public class TestColony<T extends DataPoint<?>> extends Colony<T> {
    */
   public Ant[] getAnts() { return ants; }
 
+  /**
+   * @return The DistanceMetric used by this TestColony.
+   */
   public DistanceMetric<T> getDistanceCalculator(){
     return this.distanceCalculator;
+  }
+
+  /**
+   * @return The TestRandomizer used by this TestColony.
+   */
+  public TestRandom getRandomizer() {
+    return (TestRandom) this.randomizer;
   }
 
 }

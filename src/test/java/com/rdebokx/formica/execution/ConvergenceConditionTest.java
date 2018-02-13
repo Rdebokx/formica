@@ -16,7 +16,7 @@ public class ConvergenceConditionTest {
   @Test
   public void testShouldStopBasic(){
     Configuration config = new Configuration(ManhattanMetric.METRIC_NAME, 1, 0.05, 0.25, new DummyCondition());
-    TestColony colony = new TestColony(config, null, Arrays.asList());
+    TestColony colony = new TestColony(config, Arrays.asList());
 
     //Stub quality metric
     QualityMetric qmMock = Mockito.mock(QualityMetric.class);
@@ -35,7 +35,7 @@ public class ConvergenceConditionTest {
   @Test
   public void testShouldStopAfterFilled(){
     Configuration config = new Configuration(ManhattanMetric.METRIC_NAME, 1, 0.05, 0.25, new DummyCondition());
-    TestColony colony = new TestColony(config, null, Arrays.asList());
+    TestColony colony = new TestColony(config, Arrays.asList());
 
     //Stub quality metric
     QualityMetric qmMock = Mockito.mock(QualityMetric.class);
@@ -59,7 +59,7 @@ public class ConvergenceConditionTest {
   @Test
   public void testShouldStopAt3rd(){
     Configuration config = new Configuration(ManhattanMetric.METRIC_NAME, 1, 0.05, 0.25, new DummyCondition());
-    TestColony colony = new TestColony(config, null, Arrays.asList());
+    TestColony colony = new TestColony(config, Arrays.asList());
 
     //Stub quality metric
     QualityMetric qmMock = Mockito.mock(QualityMetric.class);

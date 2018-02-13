@@ -29,7 +29,7 @@ public class AvgCentroidDistTest {
   public void testGetScore(){
     Configuration config = new Configuration(ManhattanMetric.METRIC_NAME, 1, 0.05, 0.25, new DummyCondition());
     TestRandom randomizer = new TestRandom();
-    TestColony colony = new TestColony(config, randomizer, Arrays.asList(dp1, dp2, dp3, dp4, dp5, dp6));
+    TestColony colony = new TestColony(config, Arrays.asList(dp1, dp2, dp3, dp4, dp5, dp6));
 
     //Clear buckets
     Bucket bucket0 = new Bucket(colony, dp1, dp2, dp3, dp4);

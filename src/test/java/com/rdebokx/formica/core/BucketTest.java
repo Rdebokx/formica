@@ -24,7 +24,7 @@ public class BucketTest {
   public void testCalculateCentroidBasic(){
     Configuration config = new Configuration(ManhattanMetric.METRIC_NAME, 1, 0.05, 0.25, new DummyCondition());
     TestRandom randomizer = new TestRandom();
-    TestColony colony = new TestColony(config, randomizer, Arrays.asList(dp1, dp2, dp3, dp4));
+    TestColony colony = new TestColony(config, Arrays.asList(dp1, dp2, dp3, dp4));
 
     Bucket bucket = new Bucket(colony);
     Assert.assertNull(bucket.getCentroid());
@@ -42,7 +42,7 @@ public class BucketTest {
   public void testCalculateCentroid(){
     Configuration config = new Configuration(ManhattanMetric.METRIC_NAME, 1, 0.05, 0.25, new DummyCondition());
     TestRandom randomizer = new TestRandom();
-    TestColony colony = new TestColony(config, randomizer, Arrays.asList(dp1, dp2, dp3, dp4, dp5, dp6));
+    TestColony colony = new TestColony(config, Arrays.asList(dp1, dp2, dp3, dp4, dp5, dp6));
 
     Bucket<DataPoint2D> bucket = new Bucket<>(colony, dp1, dp2, dp3, dp4);
     Assert.assertEquals(dp3, bucket.getCentroid());

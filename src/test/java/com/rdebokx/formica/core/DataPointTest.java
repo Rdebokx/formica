@@ -25,7 +25,7 @@ public class DataPointTest {
     );
     Configuration config = new Configuration(ManhattanMetric.METRIC_NAME, 1, 0.05, 0.25, new DummyCondition());
     TestRandom randomizer = new TestRandom();
-    Colony colony = new TestColony(config, randomizer, dataPoints);
+    Colony colony = new TestColony(config, dataPoints);
     Bucket bucket = new Bucket(colony, dataPoints);
 
     double maxDistance = 16; //Manhattan distance between datapoints at indices 0 and 3.
@@ -43,4 +43,5 @@ public class DataPointTest {
     DataPoint dp6 = new DataPoint2D(6, 6);
     Assert.assertEquals((10 + 2 + 6 + 6) / 4.0 / maxDistance, dp6.avgDistanceToBucket(bucket, colony.distanceCalculator), .0001);
   }
+
 }
