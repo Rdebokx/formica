@@ -14,7 +14,7 @@ public class Bucket<E extends DataPoint<?>> implements Iterable<E> {
   /**
    * ArrayList to store the DataPoints in this bucket.
    */
-  private final ArrayList<E> list;
+  private final ArrayList<E> list = new ArrayList<>();
 
   /**
    * The centroid of this bucket, being the DataPoint in this bucket of which the average distance to all other
@@ -33,7 +33,6 @@ public class Bucket<E extends DataPoint<?>> implements Iterable<E> {
    */
   public Bucket(Colony colony){
     this.colony = colony;
-    list = new ArrayList<>();
   }
 
   /**
@@ -176,4 +175,5 @@ public class Bucket<E extends DataPoint<?>> implements Iterable<E> {
   public Stream<E> stream() {
     return list.stream();
   }
+
 }

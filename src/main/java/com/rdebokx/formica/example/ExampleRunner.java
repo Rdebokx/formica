@@ -3,33 +3,42 @@ package com.rdebokx.formica.example;
 import com.rdebokx.formica.core.Bucket;
 import com.rdebokx.formica.core.Colony;
 import com.rdebokx.formica.execution.Configuration;
+import com.rdebokx.formica.execution.ResultPrinter;
+import com.rdebokx.formica.execution.TimeCondition;
 import com.rdebokx.formica.metrics.distance.EuclideanMetric;
+import org.pmw.tinylog.Logger;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.List;
 
 public class ExampleRunner {
 
   public static void main(String ... args){
-    System.out.println("Hello world! Let's build a colony filled with fruit...");
+    Logger.info("Hello world! Let's build a colony filled with fruit...");
     Colony colony = buildColony();
 
     long startTime = System.currentTimeMillis();
     //Run for 10s
-    System.out.println("Running the colony for 10s.");
-    while(System.currentTimeMillis() < startTime + 1000*10){
+    Logger.info("Running the colony for 10s.");
+    while(!colony.hasStopped()){
       colony.nextStep();
     }
 
-    List<Bucket> buckets = colony.getBucketsCopy();
-    for(int i = 0; i < buckets.size(); i++){
-      Bucket bucket = buckets.get(i);
-      System.out.println("Bucket " + i + ": " + bucket);
+    Logger.info("Colony terminated after 10s. " + colony.getStatsLogger().getTotalAntMoves() + " ant moves were done.");
+
+    StringWriter stringWriter = new StringWriter();
+    try{
+      ResultPrinter.printBucketResults(stringWriter, colony);
+      Logger.info("Colony Result: \n" + stringWriter.toString());
+    } catch(IOException e){
+      Logger.error(e);
     }
   }
 
   public static Colony buildColony() {
-    Configuration config = new Configuration(EuclideanMetric.METRIC_NAME, 5, 0.05, 0.25);
+    Configuration config = new Configuration(EuclideanMetric.METRIC_NAME, 5, 0.05, 0.25, new TimeCondition(1000*10));
 
     return new Colony(config, Arrays.asList(
         new Fruit("Apple", 0.214, 0.180, 2.5, 60),

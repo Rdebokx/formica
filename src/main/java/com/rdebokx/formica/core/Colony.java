@@ -4,9 +4,9 @@ import com.rdebokx.formica.execution.Configuration;
 import com.rdebokx.formica.metrics.distance.DistanceMetric;
 import com.rdebokx.formica.metrics.distance.EuclideanMetric;
 import com.rdebokx.formica.metrics.distance.ManhattanMetric;
+import org.pmw.tinylog.Logger;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -32,6 +32,11 @@ public class Colony<T extends DataPoint<?>> {
   protected final DistanceMetric<T> distanceCalculator;
 
   /**
+   * Logger for keeping track of the Colony stats.
+   */
+  protected final StatsLogger statsLogger;
+
+  /**
    * The Random object used by the ants in this colony.
    */
   protected Random randomizer;
@@ -50,6 +55,7 @@ public class Colony<T extends DataPoint<?>> {
     this.config = config;
     this.distanceCalculator = createDistanceMetric(initialData);
     this.randomizer = new Random();
+    this.statsLogger = new StatsLogger(config.getNrOfAnts());
     initializeBuckets(initialData);
     initializeAnts();
   }
@@ -85,8 +91,15 @@ public class Colony<T extends DataPoint<?>> {
   private void initializeAnts(){
     ants = new Ant[config.getNrOfAnts()];
     for(int i = 0; i < config.getNrOfAnts(); i++){
-      ants[i] = new Ant(this);
+      ants[i] = new Ant(this, i);
     }
+  }
+
+  /**
+   * @return The StatsLogger of this Colony.
+   */
+  public StatsLogger getStatsLogger() {
+    return statsLogger;
   }
 
   /**
@@ -96,13 +109,12 @@ public class Colony<T extends DataPoint<?>> {
    */
   public boolean nextStep() {
     if(terminatingAnts == null){
-      doNextStep();
-      return true;
+      return doNextStep();
     } else if(terminatingAnts.size() > 0){
       windDown();
       return true;
     } else {
-      //TODO: log that this colony has terminated
+      Logger.info("Colony has terminated.");
       return false;
     }
   }
@@ -112,14 +124,16 @@ public class Colony<T extends DataPoint<?>> {
    * Iff the stopping condition was met, the stop() function is called, follwed by another call to the nextStep() function which should be directed to the windDown() function.
    * Otherwise, a rand om Ant in this colony will be picked and moved across the buckets.
    */
-  private void doNextStep() {
+  private boolean doNextStep() {
     if(config.getStopCondition().shouldStop(this)){
+      Logger.info("Stopping Condition was met.");
       stop();
-      nextStep();
+      return nextStep();
     } else {
       Ant nextAnt = ants[randomizer.nextInt(ants.length)];
       Bucket nextBucket = buckets.get(randomizer.nextInt(buckets.size()));
       nextAnt.move(nextBucket);
+      return true;
     }
   }
 
@@ -155,6 +169,7 @@ public class Colony<T extends DataPoint<?>> {
    * As part of this function, a list of Ants that are still carrying payloads is constructed which will be used is the consecutive steps.
    */
   public void stop(){
+    Logger.info("Colony was requested to stop.");
     terminatingAnts = new ArrayList<>();
     for(Ant ant : ants){
       if(ant.getPayload() != null){

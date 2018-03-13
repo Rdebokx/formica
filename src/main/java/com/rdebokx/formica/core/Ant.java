@@ -1,9 +1,13 @@
 package com.rdebokx.formica.core;
 
+import org.pmw.tinylog.Logger;
+
 /**
  * Ant class, representing an ant that can pick up and drop DataPoints when moving from bucket to bucket, based on similarity of (or to) the DataPoints in the bucket.
  */
 public class Ant<T> {
+
+  private final int id;
 
   /**
    * The Colony that this ant is currently part of.
@@ -20,7 +24,8 @@ public class Ant<T> {
    * Constructor, constructing an Ant for the provided Colony.
    * @param colony The Colony that this Ant belongs to.
    */
-  public Ant(Colony colony){
+  public Ant(Colony colony, int id){
+    this.id = id;
     this.colony = colony;
   }
 
@@ -35,6 +40,7 @@ public class Ant<T> {
     } else {
       drop(nextBucket);
     }
+    colony.statsLogger.logMove(this);
   }
 
   /**
@@ -54,6 +60,7 @@ public class Ant<T> {
       double distanceToBucket = nextBucket.get(candidateIndex).avgDistanceToBucket(nextBucket, colony.distanceCalculator);
 
       if (performAction(distanceToBucket) || performAction(colony.config.getBasicPickupProb())) {
+        Logger.debug("Ant is picking up element " + candidateIndex + " from bucket.");
         payload = nextBucket.remove(candidateIndex);
       }
     }
@@ -72,6 +79,7 @@ public class Ant<T> {
       throw new RuntimeException("Ant has no payload to drop.");
     }
     if(!nextBucket.isEmpty() && performAction(1 - payload.avgDistanceToBucket(nextBucket, colony.distanceCalculator)) || performAction(colony.config.getBasicDropProb())){
+      Logger.debug("Ant is dropping payload.");
       nextBucket.add(payload);
       payload = null;
     }
@@ -91,4 +99,9 @@ public class Ant<T> {
   public DataPoint getPayload() {
     return payload;
   }
+
+  /**
+   * @return The ant ID.
+   */
+  public int getId() { return id; }
 }
