@@ -53,4 +53,4 @@ Contributions of any kind are very much appreciated. For more information on how
 If you'd like to get in touch or if you have any questions regarding the project, please submit an issue through the [Formica Github Repository](https://github.com/Rdebokx/formica/issues).
 
 ## License
-The Formica software is licensed under [the New BSD License](LICENSE).
+The Formica software is licensed under the [MIT](LICENSE) license.
